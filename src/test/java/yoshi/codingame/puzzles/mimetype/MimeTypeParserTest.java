@@ -3,10 +3,10 @@ package yoshi.codingame.puzzles.mimetype;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static yoshi.codingame.puzzles.utils.Parser.LINE_SEPARATOR;
 
 public class MimeTypeParserTest {
 
@@ -29,7 +29,7 @@ public class MimeTypeParserTest {
     @Test
     public void shouldReadFirstInputWithOneValue() {
         final String input = "" +
-                "1\n" +
+                "1" + LINE_SEPARATOR +
                 "a";
         final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
         List<List<String>> actual = mimeTypeParser.parseWithSeparator(0, " ");
@@ -41,7 +41,7 @@ public class MimeTypeParserTest {
     @Test
     public void shouldReadFirstInputWithManyValues() {
         final String input = "" +
-                "1\n" +
+                "1" + LINE_SEPARATOR +
                 "a b";
         final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
         List<List<String>> actual = mimeTypeParser.parseWithSeparator(0, " ");
@@ -54,13 +54,13 @@ public class MimeTypeParserTest {
     @Ignore
     public void name() {
         final String input = "" +
-                "2\n" +
-                "4\n" +
-                "html text/html\n" +
-                "png image/png\n" +
-                "test.html\n" +
-                "noextension\n" +
-                "portrait.png\n" +
+                "2" + LINE_SEPARATOR +
+                "4" + LINE_SEPARATOR +
+                "html text/html" + LINE_SEPARATOR +
+                "png image/png" + LINE_SEPARATOR +
+                "test.html" + LINE_SEPARATOR +
+                "noextension" + LINE_SEPARATOR +
+                "portrait.png" + LINE_SEPARATOR +
                 "doc.TXT";
         final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
         assertThat(mimeTypeParser.parseWithSeparator(0, " "));

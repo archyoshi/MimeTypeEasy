@@ -8,6 +8,8 @@ import java.util.List;
 
 public class MimeTypeParser implements Parser {
     private final String input;
+    private String[] lines;
+
 
     public MimeTypeParser(final String input) {
         this.input = input;
@@ -16,8 +18,11 @@ public class MimeTypeParser implements Parser {
     @Override
     public List<List<String>> parseWithSeparator(final int line, final String separator) {
         if(input != null && !input.isEmpty()){
+            lines = input.split(LINE_SEPARATOR);
             List<String> elements = new ArrayList<>();
-            elements.add("a");
+            if (lines.length > 0) {
+                Collections.addAll(elements, lines[1].split(separator));
+            }
             return new ArrayList<>(Collections.singleton(elements));
         }
         return Collections.emptyList();
