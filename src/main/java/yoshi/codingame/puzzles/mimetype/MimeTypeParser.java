@@ -2,7 +2,7 @@ package yoshi.codingame.puzzles.mimetype;
 
 import yoshi.codingame.puzzles.utils.Parser;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,30 +23,17 @@ public class MimeTypeParser implements Parser {
     public List<List<String>> parseWithSeparator(final int entry, final String separator) {
         if (input != null && !input.isEmpty()) {
             lines = input.split(LINE_SEPARATOR);
-            int relatedLines = Integer.valueOf(lines[0]);
+            int entryValue = Integer.valueOf(lines[entry]);
             int offset = computeOffset(entry);
-            return IntStream.range(0, relatedLines)
-                    .mapToObj(i -> parseLineElements(i + offset, separator))
+            return IntStream.range(0, entryValue)
+                    .mapToObj(i -> Arrays.asList(lines[i + offset].split(separator)))
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
 
     private int computeOffset(final int entry) {
-        int offset;
-        if (entry == 0) {
-            offset = 0;
-        } else {
-            offset = Integer.valueOf(lines[entry - 1]);
-        }
-        return totalEntries + offset;
+        return totalEntries + (entry > 0 ? IntStream.rangeClosed(0, entry - 1).map(i -> Integer.valueOf(lines[i])).sum() : 0);
     }
 
-    private List<String> parseLineElements(final int lineNumber, final String separator) {
-        List<String> elements = new ArrayList<>();
-        if (lines.length >= lineNumber) {
-            Collections.addAll(elements, lines[lineNumber].split(separator));
-        }
-        return elements;
-    }
 }

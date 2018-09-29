@@ -35,7 +35,7 @@ public class MimeTypeParserTest {
         List<List<String>> actual = mimeTypeParser.parseWithSeparator(0, " ");
         assertThat(actual).isNotEmpty().hasSize(1);
         assertThat(actual.get(0)).isNotEmpty().hasSize(1);
-        assertThat(actual.get(0).get(0)).isEqualTo("a");
+        assertThat(actual.get(0)).containsExactly("a");
     }
 
     @Test
@@ -84,6 +84,7 @@ public class MimeTypeParserTest {
         assertThat(firstEntry.get(1)).containsExactly("c", "d");
 
         List<List<String>> secondEntry = mimeTypeParser.parseWithSeparator(1, " ");
+        assertThat(secondEntry).isNotEmpty().hasSize(2);
         assertThat(secondEntry.get(0)).isNotEmpty().hasSize(2);
         assertThat(secondEntry.get(0)).containsExactly("e", "f");
         assertThat(secondEntry.get(1)).isNotEmpty().hasSize(2);
@@ -91,8 +92,79 @@ public class MimeTypeParserTest {
     }
 
     @Test
-    @Ignore
-    public void name() {
+    public void shouldReadAllInputsWithManyValues() {
+        final String input = "" +
+                "2" + LINE_SEPARATOR +
+                "2" + LINE_SEPARATOR +
+                "2" + LINE_SEPARATOR +
+                "a b"+ LINE_SEPARATOR +
+                "c d"+ LINE_SEPARATOR +
+                "e f"+ LINE_SEPARATOR +
+                "g h"+ LINE_SEPARATOR +
+                "i j"+ LINE_SEPARATOR +
+                "k l";
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input, 3);
+
+        List<List<String>> firstEntry = mimeTypeParser.parseWithSeparator(0, " ");
+        assertThat(firstEntry).isNotEmpty().hasSize(2);
+        assertThat(firstEntry.get(0)).isNotEmpty().hasSize(2);
+        assertThat(firstEntry.get(0)).containsExactly("a", "b");
+        assertThat(firstEntry.get(1)).isNotEmpty().hasSize(2);
+        assertThat(firstEntry.get(1)).containsExactly("c", "d");
+
+        List<List<String>> secondEntry = mimeTypeParser.parseWithSeparator(1, " ");
+        assertThat(secondEntry).isNotEmpty().hasSize(2);
+        assertThat(secondEntry.get(0)).isNotEmpty().hasSize(2);
+        assertThat(secondEntry.get(0)).containsExactly("e", "f");
+        assertThat(secondEntry.get(1)).isNotEmpty().hasSize(2);
+        assertThat(secondEntry.get(1)).containsExactly("g", "h");
+
+        List<List<String>> thirdEntry = mimeTypeParser.parseWithSeparator(2, " ");
+        assertThat(thirdEntry).isNotEmpty().hasSize(2);
+        assertThat(thirdEntry.get(0)).isNotEmpty().hasSize(2);
+        assertThat(thirdEntry.get(0)).containsExactly("i", "j");
+        assertThat(thirdEntry.get(1)).isNotEmpty().hasSize(2);
+        assertThat(thirdEntry.get(1)).containsExactly("k", "l");
+    }
+
+    @Test
+    public void shouldReadAllInputsWithManyValuesRandom() {
+        final String input = "" +
+                "1" + LINE_SEPARATOR +
+                "2" + LINE_SEPARATOR +
+                "3" + LINE_SEPARATOR +
+                "a"+ LINE_SEPARATOR +
+                "b c"+ LINE_SEPARATOR +
+                "d e"+ LINE_SEPARATOR +
+                "f g h"+ LINE_SEPARATOR +
+                "i j k"+ LINE_SEPARATOR +
+                "l m n";
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input, 3);
+
+        List<List<String>> firstEntry = mimeTypeParser.parseWithSeparator(0, " ");
+        assertThat(firstEntry).isNotEmpty().hasSize(1);
+        assertThat(firstEntry.get(0)).isNotEmpty().hasSize(1);
+        assertThat(firstEntry.get(0)).containsExactly("a");
+
+        List<List<String>> secondEntry = mimeTypeParser.parseWithSeparator(1, " ");
+        assertThat(secondEntry).isNotEmpty().hasSize(2);
+        assertThat(secondEntry.get(0)).isNotEmpty().hasSize(2);
+        assertThat(secondEntry.get(0)).containsExactly("b", "c");
+        assertThat(secondEntry.get(1)).isNotEmpty().hasSize(2);
+        assertThat(secondEntry.get(1)).containsExactly("d", "e");
+
+        List<List<String>> thirdEntry = mimeTypeParser.parseWithSeparator(2, " ");
+        assertThat(thirdEntry).isNotEmpty().hasSize(3);
+        assertThat(thirdEntry.get(0)).isNotEmpty().hasSize(3);
+        assertThat(thirdEntry.get(0)).containsExactly("f", "g", "h");
+        assertThat(thirdEntry.get(1)).isNotEmpty().hasSize(3);
+        assertThat(thirdEntry.get(1)).containsExactly("i", "j", "k");
+        assertThat(thirdEntry.get(2)).isNotEmpty().hasSize(3);
+        assertThat(thirdEntry.get(2)).containsExactly("l", "m", "n");
+    }
+
+    @Test
+    public void shouldParseSampleInput() {
         final String input = "" +
                 "2" + LINE_SEPARATOR +
                 "4" + LINE_SEPARATOR +
@@ -102,7 +174,24 @@ public class MimeTypeParserTest {
                 "noextension" + LINE_SEPARATOR +
                 "portrait.png" + LINE_SEPARATOR +
                 "doc.TXT";
-        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input, 1);
-        assertThat(mimeTypeParser.parseWithSeparator(0, " "));
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input, 2);
+
+        List<List<String>> firstEntry = mimeTypeParser.parseWithSeparator(0, " ");
+        assertThat(firstEntry).isNotEmpty().hasSize(2);
+        assertThat(firstEntry.get(0)).isNotEmpty().hasSize(2);
+        assertThat(firstEntry.get(0)).containsExactly("html", "text/html");
+        assertThat(firstEntry.get(1)).isNotEmpty().hasSize(2);
+        assertThat(firstEntry.get(1)).containsExactly("png", "image/png");
+
+        List<List<String>> secondEntry = mimeTypeParser.parseWithSeparator(1, " ");
+        assertThat(secondEntry).isNotEmpty().hasSize(4);
+        assertThat(secondEntry.get(0)).isNotEmpty().hasSize(1);
+        assertThat(secondEntry.get(0)).containsExactly("test.html");
+        assertThat(secondEntry.get(1)).isNotEmpty().hasSize(1);
+        assertThat(secondEntry.get(1)).containsExactly("noextension");
+        assertThat(secondEntry.get(2)).isNotEmpty().hasSize(1);
+        assertThat(secondEntry.get(2)).containsExactly("portrait.png");
+        assertThat(secondEntry.get(3)).isNotEmpty().hasSize(1);
+        assertThat(secondEntry.get(3)).containsExactly("doc.TXT");
     }
 }
