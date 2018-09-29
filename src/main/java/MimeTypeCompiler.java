@@ -1,5 +1,9 @@
-public class MimeTypeCompiler {
-    public static String generateListFor(String input) {
-        throw new UnsupportedOperationException();
+
+public interface MimeTypeCompiler {
+
+    static String generateListFor(final String input){
+        return "";
     }
+
+    String getMimeTypeFor(String s);
 }
