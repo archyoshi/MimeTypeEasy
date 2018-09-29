@@ -1,3 +1,4 @@
+package yoshi.codingame.puzzles.mimetype;
 
 public interface MimeTypeCompiler {
 
