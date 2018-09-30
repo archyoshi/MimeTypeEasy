@@ -29,7 +29,7 @@ public class EasyMimeTypeCompilerTest {
                 "noextension\r\n" +
                 "portrait.png\r\n" +
                 "doc.TXT";
-        final GenericParser mimeTypeParser = new MimeTypeParser(input);
+        final GenericParser mimeTypeParser = new GenericParser(input, 2);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         assertThat(compiler.getMimeType(file)).isEqualTo(mimeType);
     }
@@ -41,7 +41,7 @@ public class EasyMimeTypeCompilerTest {
                 "1\r\n" +
                 "html text/html\r\n" +
                 "more.";
-        final GenericParser mimeTypeParser = new MimeTypeParser(input);
+        final GenericParser mimeTypeParser = new GenericParser(input, 2);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         assertThat(compiler.getMimeType("more.")).isEqualTo("UNKNOWN");
     }
@@ -53,7 +53,7 @@ public class EasyMimeTypeCompilerTest {
                 "1\r\n" +
                 "html text/html\r\n" +
                 "more.html.tmp";
-        final GenericParser mimeTypeParser = new MimeTypeParser(input);
+        final GenericParser mimeTypeParser = new GenericParser(input, 2);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         assertThat(compiler.getMimeType("more.html.tmp")).isEqualTo("UNKNOWN");
     }
@@ -65,7 +65,7 @@ public class EasyMimeTypeCompilerTest {
                 "1\r\n" +
                 "html text/html\r\n" +
                 "more.xhtml";
-        final GenericParser mimeTypeParser = new MimeTypeParser(input);
+        final GenericParser mimeTypeParser = new GenericParser(input, 2);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         assertThat(compiler.getMimeType("more.xhtml")).isEqualTo("UNKNOWN");
     }
@@ -78,7 +78,7 @@ public class EasyMimeTypeCompilerTest {
                 "1\r\n" +
                 "html text/html\r\n" +
                 "more.HTML";
-        final GenericParser mimeTypeParser = new MimeTypeParser(input);
+        final GenericParser mimeTypeParser = new GenericParser(input, 2);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         assertThat(compiler.getMimeType("more.HTML")).isEqualTo("text/html");
     }
@@ -99,7 +99,7 @@ public class EasyMimeTypeCompilerTest {
                 "UNKNOWN\r\n" +
                 "image/png\r\n" +
                 "UNKNOWN";
-        final GenericParser mimeTypeParser = new MimeTypeParser(input);
+        final GenericParser mimeTypeParser = new GenericParser(input, 2);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         final MimeTypePrinter printer = new MimeTypePrinter();
         assertThat(printer.print(compiler.getAllMimeTypes())).isEqualTo(output);
