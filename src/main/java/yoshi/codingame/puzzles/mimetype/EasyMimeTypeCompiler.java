@@ -27,7 +27,7 @@ public class EasyMimeTypeCompiler implements MimeTypeCompiler {
                     .filter(e -> {
                         if(fileName.contains(".")){
                             String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-                            return extension.equals(e.getKey());
+                            return extension.equalsIgnoreCase(e.getKey());
                         }
                         return false;
                     })

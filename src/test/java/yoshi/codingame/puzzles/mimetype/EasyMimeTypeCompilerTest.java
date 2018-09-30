@@ -69,6 +69,19 @@ public class EasyMimeTypeCompilerTest {
         assertThat(compiler.getMimeType("more.xhtml")).isEqualTo("UNKNOWN");
     }
 
+
+    @Test
+    public void shouldPrintExtensionEvenWhenNotMatchingCase() {
+        String input = "" +
+                "1\r\n" +
+                "1\r\n" +
+                "html text/html\r\n" +
+                "more.HTML";
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
+        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
+        assertThat(compiler.getMimeType("more.HTML")).isEqualTo("text/html");
+    }
+
     @Test
     public void listMimeTypesOfAllEntriesMultipleCases() {
         String input = "" +
