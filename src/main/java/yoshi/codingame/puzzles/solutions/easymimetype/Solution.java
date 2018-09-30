@@ -1,22 +1,11 @@
 package yoshi.codingame.puzzles.solutions.easymimetype;
 
-import java.util.*;
-import java.io.*;
-import java.math.*;
-import java.util.stream.*;
-
-// TODO: don't forget to remove package heading !
-class Solution {
-
-    public static void main(String args[]) {
-        Scanner in = new Scanner(System.in);
-
-        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(in);
-        final MimeTypePrinter printer = new MimeTypePrinter();
-
-        System.out.println(printer.print(compiler.getAllMimeTypes()));
-    }
-}
+import java.util.ArrayList;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Map;
+        import java.util.Scanner;
+        import java.util.stream.Collectors;
 
 interface Printer {
     String LINE_SEPARATOR = System.getProperty("line.separator");
@@ -29,6 +18,19 @@ interface MimeTypeCompiler {
     List<String> getAllMimeTypes();
 
     String getMimeType(String file);
+}
+
+// TODO: don't forget to remove package heading !
+class Solution {
+
+    public static void main(String args[]) {
+        Scanner in = new Scanner(System.in);
+
+        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(in);
+        final MimeTypePrinter printer = new MimeTypePrinter();
+
+        System.out.println(printer.print(compiler.getAllMimeTypes()));
+    }
 }
 
 class MimeTypePrinter implements Printer {
@@ -46,7 +48,7 @@ class EasyMimeTypeCompiler implements MimeTypeCompiler {
     private final Map<String, String> knownMimeTypes;
     private final List<String> filesToEvaluate;
 
-    EasyMimeTypeCompiler(final Scanner in) {
+    public EasyMimeTypeCompiler(final Scanner in) {
         // Number of elements which make up the association table.
         N = in.nextInt();
 
@@ -55,7 +57,7 @@ class EasyMimeTypeCompiler implements MimeTypeCompiler {
 
         knownMimeTypes = new HashMap<>();
         for (int i = 0; i < N; i++) {
-            knownMimeTypes.put(in.next(), in.next()); // (EXT, MT)
+            knownMimeTypes.put(in.next().toLowerCase(), in.next()); // (EXT, MT)
         }
         in.nextLine();
 
@@ -65,23 +67,20 @@ class EasyMimeTypeCompiler implements MimeTypeCompiler {
         }
     }
 
+    @Override
     public List<String> getAllMimeTypes() {
-        return filesToEvaluate.stream().map(this::getMimeType).collect(Collectors.toList());
+        return filesToEvaluate.parallelStream().map(this::getMimeType).collect(Collectors.toList());
     }
 
+    @Override
     public String getMimeType(final String fileName) {
-        if (fileName != null) {
-            return knownMimeTypes.entrySet().stream()
-                    .filter(e -> {
-                        if (fileName.contains(".")) {
-                            String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-                            return extension.equalsIgnoreCase(e.getKey());
-                        }
-                        return false;
-                    })
-                    .findFirst().orElse(new AbstractMap.SimpleEntry<>(null, "UNKNOWN")).getValue();
-        } else {
+        int lastDotIndex = fileName.lastIndexOf(".");
+        if (lastDotIndex < 0) {
             return "UNKNOWN";
         }
+        final String mimeType = knownMimeTypes.get(fileName.substring(lastDotIndex + 1).toLowerCase());
+        if(mimeType != null)
+            return mimeType;
+        return "UNKNOWN";
     }
 }
