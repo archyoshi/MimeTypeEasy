@@ -3,6 +3,7 @@ package yoshi.codingame.puzzles.utils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,6 +14,28 @@ public class Parser {
     private final String input;
     private final int totalEntries;
     private String[] lines;
+
+    public Parser(final Scanner in, final int totalEntries) {
+        StringBuilder inputBuilder = new StringBuilder();
+        int N = in.nextInt(); // Number of elements which make up the association table.
+        inputBuilder.append(N).append(LINE_SEPARATOR);
+
+        int Q = in.nextInt(); // Number Q of file names to be analyzed.
+        inputBuilder.append(Q).append(LINE_SEPARATOR);
+
+        for (int i = 0; i < N; i++) {
+            String EXT = in.next(); // file extension
+            String MT = in.next(); // MIME type.
+            inputBuilder.append(EXT).append(DEFAULT_ELEMENT_SEPARATOR).append(MT).append(LINE_SEPARATOR);
+        }
+        in.nextLine();
+        for (int i = 0; i < Q; i++) {
+            String FNAME = in.nextLine(); // One file name per line.
+            inputBuilder.append(FNAME).append(LINE_SEPARATOR);
+        }
+        this.input = inputBuilder.toString();
+        this.totalEntries = totalEntries;
+    }
 
     public Parser(final String input, final int totalEntries) {
         this.input = input;
@@ -29,6 +52,10 @@ public class Parser {
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+
+    public void showInput(){
+        System.out.println(input);
     }
 
     private int computeOffset(final int entry) {
