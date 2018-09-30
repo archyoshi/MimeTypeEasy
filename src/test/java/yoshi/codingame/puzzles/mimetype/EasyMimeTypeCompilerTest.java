@@ -26,7 +26,7 @@ public class EasyMimeTypeCompilerTest {
                 "noextension\r\n" +
                 "portrait.png\r\n" +
                 "doc.TXT";
-        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input, 2);
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         assertThat(compiler.getMimeType(file)).isEqualTo(mimeType);
     }
@@ -47,7 +47,7 @@ public class EasyMimeTypeCompilerTest {
                 "UNKNOWN\r\n" +
                 "image/png\r\n" +
                 "UNKNOWN";
-        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input, 2);
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         final MimeTypePrinter printer = new MimeTypePrinter();
         assertThat(printer.print(compiler.getAllMimeTypes())).isEqualTo(output);
