@@ -15,6 +15,11 @@ public class Parser {
     private final int totalEntries;
     private String[] lines;
 
+    /*
+    TODO Optimise the parser because i lose time Reading from the scanner which is already parsedn then parsing again !
+    The problem I have is that my algorithm doesn't execute very fast... I gotta find ways to optimise it !
+     */
+
     public Parser(final Scanner in, final int totalEntries) {
         StringBuilder inputBuilder = new StringBuilder();
         int N = in.nextInt(); // Number of elements which make up the association table.
