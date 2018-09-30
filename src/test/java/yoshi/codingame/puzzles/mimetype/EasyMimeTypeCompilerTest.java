@@ -13,9 +13,11 @@ public class EasyMimeTypeCompilerTest {
 
     @Test
     @Parameters({
-            "noextension, UNKNOWN",
             "test.html, text/html",
-            "something.png ,image/png"})
+            "noextension, UNKNOWN",
+            "portrait.png ,image/png",
+            "doc.TXT, UNKNOWN"
+    })
     public void shouldPrintMimeTypeForGivenInputFile(String file, String mimeType) {
         String input = "" +
                 "2\r\n" +
@@ -29,6 +31,42 @@ public class EasyMimeTypeCompilerTest {
         final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
         final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
         assertThat(compiler.getMimeType(file)).isEqualTo(mimeType);
+    }
+
+    @Test
+    public void shouldPrintUknownWhenPointWithNoExtension() {
+        String input = "" +
+                "1\r\n" +
+                "1\r\n" +
+                "html text/html\r\n" +
+                "more.";
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
+        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
+        assertThat(compiler.getMimeType("more.")).isEqualTo("UNKNOWN");
+    }
+
+    @Test
+    public void shouldPrintUknownWhenLastExtensionIsUnknown() {
+        String input = "" +
+                "1\r\n" +
+                "1\r\n" +
+                "html text/html\r\n" +
+                "more.html.tmp";
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
+        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
+        assertThat(compiler.getMimeType("more.html.tmp")).isEqualTo("UNKNOWN");
+    }
+
+    @Test
+    public void shouldPrintUknownWhenLastExtensionIsNotExactlyAsListed() {
+        String input = "" +
+                "1\r\n" +
+                "1\r\n" +
+                "html text/html\r\n" +
+                "more.xhtml";
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input);
+        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
+        assertThat(compiler.getMimeType("more.xhtml")).isEqualTo("UNKNOWN");
     }
 
     @Test

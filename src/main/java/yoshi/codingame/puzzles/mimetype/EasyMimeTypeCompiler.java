@@ -23,7 +23,15 @@ public class EasyMimeTypeCompiler implements MimeTypeCompiler {
     @Override
     public String getMimeType(final String fileName) {
         if (fileName != null) {
-            return knownMimeTypes.entrySet().stream().filter(e -> fileName.contains("." + e.getKey())).findFirst().orElse(new AbstractMap.SimpleEntry<>(null, "UNKNOWN")).getValue();
+            return knownMimeTypes.entrySet().stream()
+                    .filter(e -> {
+                        if(fileName.contains(".")){
+                            String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+                            return extension.equals(e.getKey());
+                        }
+                        return false;
+                    })
+                    .findFirst().orElse(new AbstractMap.SimpleEntry<>(null, "UNKNOWN")).getValue();
         } else {
             return "UNKNOWN";
         }
