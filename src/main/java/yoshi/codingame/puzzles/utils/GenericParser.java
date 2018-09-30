@@ -41,11 +41,6 @@ public class GenericParser implements Parser {
         return Collections.emptyList();
     }
 
-    @Override
-    public void showInput(){
-        System.out.println(input);
-    }
-
     private int computeOffset(final int entry) {
         return totalEntries + (entry > 0 ? IntStream.rangeClosed(0, entry - 1).map(i -> Integer.valueOf(lines[i])).sum() : 0);
     }
