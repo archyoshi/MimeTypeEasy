@@ -20,6 +20,11 @@ public class MimeTypeParser implements Parser {
     }
 
     @Override
+    public List<List<String>> parseWithSeparator(final int entry) {
+        return parseWithSeparator(entry, DEFAULT_ELEMENT_SEPARATOR);
+    }
+
+    @Override
     public List<List<String>> parseWithSeparator(final int entry, final String separator) {
         if (input != null && !input.isEmpty()) {
             lines = input.split(LINE_SEPARATOR);

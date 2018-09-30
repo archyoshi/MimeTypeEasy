@@ -1,10 +1,10 @@
 package yoshi.codingame.puzzles.mimetype;
 
+import java.util.List;
+
 public interface MimeTypeCompiler {
 
-    static String generateListFor(final String input){
-        return "";
-    }
+    List<String> getAllMimeTypes();
 
-    String getMimeTypeFor(String s);
+    String getMimeType(String file);
 }

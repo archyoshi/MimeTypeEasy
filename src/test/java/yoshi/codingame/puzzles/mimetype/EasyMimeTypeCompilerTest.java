@@ -1,11 +1,11 @@
 package yoshi.codingame.puzzles.mimetype;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 public class EasyMimeTypeCompilerTest {
@@ -17,28 +17,40 @@ public class EasyMimeTypeCompilerTest {
             "test.html, text/html",
             "something.png ,image/png"})
     public void shouldPrintMimeTypeForGivenInputFile(String file, String mimeType) {
-        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler();
-        assertThat(compiler.getMimeTypeFor(file)).isEqualTo(mimeType);
+        String input = "" +
+                "2\r\n" +
+                "4\r\n" +
+                "html text/html\r\n" +
+                "png image/png\r\n" +
+                "test.html\r\n" +
+                "noextension\r\n" +
+                "portrait.png\r\n" +
+                "doc.TXT";
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input, 2);
+        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
+        assertThat(compiler.getMimeType(file)).isEqualTo(mimeType);
     }
 
     @Test
-    @Ignore
-    void listMimeTypesOfAllEntriesMultipleCases() {
+    public void listMimeTypesOfAllEntriesMultipleCases() {
         String input = "" +
-                "2\n" +
-                "4\n" +
-                "html text/html\n" +
-                "png image/png\n" +
-                "test.html\n" +
-                "noextension\n" +
-                "portrait.png\n" +
+                "2\r\n" +
+                "4\r\n" +
+                "html text/html\r\n" +
+                "png image/png\r\n" +
+                "test.html\r\n" +
+                "noextension\r\n" +
+                "portrait.png\r\n" +
                 "doc.TXT";
         String output = "" +
-                "text/html\n" +
-                "UNKNOWN\n" +
-                "image/png\n" +
+                "text/html\r\n" +
+                "UNKNOWN\r\n" +
+                "image/png\r\n" +
                 "UNKNOWN";
-        assertThat(MimeTypeCompiler.generateListFor(input)).isEqualTo(output);
+        final MimeTypeParser mimeTypeParser = new MimeTypeParser(input, 2);
+        final EasyMimeTypeCompiler compiler = new EasyMimeTypeCompiler(mimeTypeParser);
+        final MimeTypePrinter printer = new MimeTypePrinter();
+        assertThat(printer.print(compiler.getAllMimeTypes())).isEqualTo(output);
     }
 
 }
