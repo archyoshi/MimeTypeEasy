@@ -1,5 +1,7 @@
 package yoshi.codingame.puzzles.mimetype;
 
+import yoshi.codingame.puzzles.utils.GenericParser;
+
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,11 @@ public class EasyMimeTypeCompiler implements MimeTypeCompiler {
     private final List<String> filesToEvaluate;
 
     public EasyMimeTypeCompiler(final MimeTypeParser parser) {
+        knownMimeTypes = parser.getKnownMimeTypes();
+        filesToEvaluate = parser.getFilesToEvaluate();
+    }
+
+    public EasyMimeTypeCompiler(final GenericParser parser) {
         knownMimeTypes = parser.parseWithSeparator(0).stream().collect(Collectors.toMap(l -> l.get(0), l -> l.get(1)));
         filesToEvaluate = parser.parseWithSeparator(1).stream().map(e -> e.get(0)).collect(Collectors.toList());
     }

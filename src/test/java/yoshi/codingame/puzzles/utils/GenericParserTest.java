@@ -7,12 +7,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static yoshi.codingame.puzzles.utils.Parser.LINE_SEPARATOR;
 
-public class ParserTest {
+public class GenericParserTest {
 
     @Test
     public void shouldReturnEmptyListWhenNullInput() {
         final String input = null;
-        final Parser parser = new Parser(input, 1);
+        final Parser parser = new GenericParser(input, 1);
         assertThat(parser.parseWithSeparator(0))
                 .isEmpty();
     }
@@ -20,7 +20,7 @@ public class ParserTest {
     @Test
     public void shouldReturnEmptyListOnEmptyInput() {
         final String input = "";
-        final Parser parser = new Parser(input, 1);
+        final Parser parser = new GenericParser(input, 1);
         assertThat(parser.parseWithSeparator(0))
                 .isEmpty();
     }
@@ -30,7 +30,7 @@ public class ParserTest {
         final String input = "" +
                 "1" + LINE_SEPARATOR +
                 "a";
-        final Parser parser = new Parser(input, 1);
+        final Parser parser = new GenericParser(input, 1);
         List<List<String>> actual = parser.parseWithSeparator(0);
         assertThat(actual).isNotEmpty().hasSize(1);
         assertThat(actual.get(0)).isNotEmpty().hasSize(1);
@@ -42,7 +42,7 @@ public class ParserTest {
         final String input = "" +
                 "1" + LINE_SEPARATOR +
                 "a b";
-        final Parser parser = new Parser(input, 1);
+        final Parser parser = new GenericParser(input, 1);
         List<List<String>> actual = parser.parseWithSeparator(0);
         assertThat(actual).isNotEmpty().hasSize(1);
         assertThat(actual.get(0)).isNotEmpty().hasSize(2);
@@ -55,7 +55,7 @@ public class ParserTest {
                 "2" + LINE_SEPARATOR +
                 "a b"+ LINE_SEPARATOR +
                 "c d";
-        final Parser parser = new Parser(input, 1);
+        final Parser parser = new GenericParser(input, 1);
         List<List<String>> actual = parser.parseWithSeparator(0);
         assertThat(actual).isNotEmpty().hasSize(2);
         assertThat(actual.get(0)).isNotEmpty().hasSize(2);
@@ -73,7 +73,7 @@ public class ParserTest {
                 "c d"+ LINE_SEPARATOR +
                 "e f"+ LINE_SEPARATOR +
                 "g h";
-        final Parser parser = new Parser(input, 2);
+        final Parser parser = new GenericParser(input, 2);
 
         List<List<String>> firstEntry = parser.parseWithSeparator(0);
         assertThat(firstEntry).isNotEmpty().hasSize(2);
@@ -102,7 +102,7 @@ public class ParserTest {
                 "g h"+ LINE_SEPARATOR +
                 "i j"+ LINE_SEPARATOR +
                 "k l";
-        final Parser parser = new Parser(input, 3);
+        final Parser parser = new GenericParser(input, 3);
 
         List<List<String>> firstEntry = parser.parseWithSeparator(0);
         assertThat(firstEntry).isNotEmpty().hasSize(2);
@@ -138,7 +138,7 @@ public class ParserTest {
                 "f g h"+ LINE_SEPARATOR +
                 "i j k"+ LINE_SEPARATOR +
                 "l m n";
-        final Parser parser = new Parser(input, 3);
+        final Parser parser = new GenericParser(input, 3);
 
         List<List<String>> firstEntry = parser.parseWithSeparator(0);
         assertThat(firstEntry).isNotEmpty().hasSize(1);
